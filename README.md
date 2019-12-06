@@ -15,7 +15,7 @@ Easiest way to use this is to compile it in a docker container :
 docker build -t check-twitter-handle:latest -f ./Dockerfile ./
 ```
 
-## Running twitter-check-handle
+## Running check-twitter-handle
 
 Then, running the script itself is a matter of populating environment variables in `.env` and starting docker container with environment file mounted
 
