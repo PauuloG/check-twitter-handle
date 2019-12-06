@@ -15,6 +15,8 @@ Easiest way to use this is to compile it in a docker container :
 docker build -t check-twitter-handle:latest -f ./Dockerfile ./
 ```
 
+Populate .env file from .env.dist template. `TWITTER_HANDLES` should be a comma separated, no @-prefixed, twitter handles.
+
 ## Running check-twitter-handle
 
 Then, running the script itself is a matter of populating environment variables in `.env` and starting docker container with environment file mounted
@@ -27,7 +29,7 @@ The official image built from this repository is also available on Docker hub im
 
 ### Cron usage
 
-In the following example, the program will check every minute if the vehicle has been impounded.
+In the following example, the program will check every minute if the twitter handles are available.
 ```
 * * * * docker run --rm -v $(pwd)/.env:/go/bin/.env docker.io/pauulog/check-twitter-handle:latest --notifier=slack check
 ```

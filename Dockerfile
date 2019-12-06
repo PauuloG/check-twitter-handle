@@ -24,7 +24,7 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certifi
 # We copy the binary from the builder
 COPY --from=builder /go/bin/check-twitter-handle /go/bin/check-twitter-handle
 
-USER poundcheck
+USER twittercheck
 
 # Run the binary.
 ENTRYPOINT ["/go/bin/check-twitter-handle"]
