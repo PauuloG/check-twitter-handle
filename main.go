@@ -20,7 +20,7 @@ type Notifier interface {
 }
 
 func main() {
-  	var notifierParameter string
+	var notifierParameter string
 
 	err := godotenv.Load("/go/bin/.env")
 	if err != nil {
@@ -98,7 +98,7 @@ func isTwitterHandleAvailable(twitterHandle string) bool {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println(fmt.Sprintf("Response for url %s : %s", twitterUrl, resp.StatusCode))
+	log.Println(fmt.Sprintf("Response for url %s : %d", twitterUrl, resp.StatusCode))
 
 	if resp.StatusCode != 200 {
 		return true
