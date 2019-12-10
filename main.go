@@ -93,11 +93,12 @@ func main() {
 func isTwitterHandleAvailable(twitterHandle string) bool {
 	twitterUrl := fmt.Sprintf("https://twitter.com/%s", twitterHandle)
 
+	log.Println(fmt.Sprintf("Visiting %v", twitterUrl))
 	resp, err := http.Get(twitterUrl)
 	if err != nil {
 		log.Fatal(err)
 	}
-  	log.Println(fmt.Sprintf("Visiting %v", twitterUrl))
+	log.Println(fmt.Sprintf("Response for url %s : %s", twitterUrl, resp.StatusCode))
 
 	if resp.StatusCode != 200 {
 		return true
