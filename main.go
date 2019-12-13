@@ -16,7 +16,7 @@ type Environment struct {
 }
 
 type Notifier interface {
-	Notify(twitterHandle string) bool
+	Notify(twitterHandle string, statusCode int) bool
 }
 
 func main() {
@@ -52,16 +52,16 @@ func main() {
 			Aliases: []string{"c"},
 			Usage:   "check if twitter handle is available",
 			Action: func(c *cli.Context) error {
-				var isAvailable bool
+				var statusCode int
 
 				notifier := getNotifier(notifierParameter)
 
 				for _, twitterHandle := range e.TwitterHandles {
-					isAvailable = isTwitterHandleAvailable(twitterHandle)
-					if isAvailable {
+					statusCode = getTwitterHandleStatusCode(twitterHandle)
+					if statusCode != 200 {
 						log.Println(fmt.Sprintf("Twitter Handle %s looks available, notifying", twitterHandle))
 
-						notifier.Notify(twitterHandle)
+						notifier.Notify(twitterHandle, statusCode)
 					} else {
 						log.Println(fmt.Sprintf("Twitter Handle %s is not available, nothing to do.", twitterHandle))
 					}
@@ -78,7 +78,7 @@ func main() {
 				log.Println("Sending test message")
 
 				notifier := getNotifier(notifierParameter)
-				notifier.Notify("test")
+				notifier.Notify("test", 404)
 				return nil
 			},
 		},
@@ -90,7 +90,7 @@ func main() {
 	}
 }
 
-func isTwitterHandleAvailable(twitterHandle string) bool {
+func getTwitterHandleStatusCode(twitterHandle string) int {
 	twitterUrl := fmt.Sprintf("https://twitter.com/%s", twitterHandle)
 
 	log.Println(fmt.Sprintf("Visiting %v", twitterUrl))
@@ -98,13 +98,9 @@ func isTwitterHandleAvailable(twitterHandle string) bool {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	log.Println(fmt.Sprintf("Response for url %s : %d", twitterUrl, resp.StatusCode))
-
-	if resp.StatusCode != 200 {
-		return true
-	}
-
-	return false
+	return resp.StatusCode
 }
 
 func getNotifier(notifierParameter string) (Notifier) {

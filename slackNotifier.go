@@ -37,16 +37,16 @@ func makeSlackNotifier() SlackNotifier {
 	return SlackNotifier{SlackToken: env.SlackToken, SlackChannel: env.SlackChannel}
 }
 
-func (notifier SlackNotifier) Notify(twitterHandle string) bool {
-	var slackMessage = notifier.GetNotificationMessage(twitterHandle)
+func (notifier SlackNotifier) Notify(twitterHandle string, statusCode int) bool {
+	var slackMessage = notifier.GetNotificationMessage(twitterHandle, statusCode)
 	notifier.SendMessage(slackMessage)
 
 	return true
 }
 
-func (notifier SlackNotifier) GetNotificationMessage(twitterHandle string) SlackMessage {
+func (notifier SlackNotifier) GetNotificationMessage(twitterHandle string, statusCode int) SlackMessage {
 	var slackMessage SlackMessage
-	messageString := fmt.Sprintf(":warning: Alert, twitter handle %s (https://twitter.com/%s) looks available ! Visit https://twitter.com/settings/screen_name :warning:", twitterHandle, twitterHandle)
+	messageString := fmt.Sprintf(":warning: Alert, twitter handle %s (https://twitter.com/%s) looks available ! Visit https://twitter.com/settings/screen_name (status code : %d):warning:", twitterHandle, twitterHandle, statusCode)
 
 	slackMessage.Text = messageString
 	slackMessage.Channel = notifier.SlackChannel
