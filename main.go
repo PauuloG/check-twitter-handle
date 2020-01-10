@@ -58,12 +58,14 @@ func main() {
 
 				for _, twitterHandle := range e.TwitterHandles {
 					statusCode = getTwitterHandleStatusCode(twitterHandle)
-					if statusCode != 200 {
-						log.Println(fmt.Sprintf("Twitter Handle %s looks available, notifying", twitterHandle))
-
-						notifier.Notify(twitterHandle, statusCode)
-					} else {
+					switch statusCode {
+					case 200:
 						log.Println(fmt.Sprintf("Twitter Handle %s is not available, nothing to do.", twitterHandle))
+					case 503:
+						log.Println(fmt.Sprintf("Twitter error when checking handle %s.", twitterHandle))
+					default:
+						log.Println(fmt.Sprintf("Twitter Handle %s looks available, notifying", twitterHandle))
+						notifier.Notify(twitterHandle, statusCode)
 					}
 				}
 
